@@ -70,9 +70,12 @@ export const getUserProfile = async (req, res) => {
 
     let user;
     if (userId) {
-      user = await User.findOne(userId);
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid User ID format" });
+      }
+      user = await User.findById(userId);
     } else if (username) {
-      user = await User.findOne(username);
+      user = await User.findOne({ username });
     }
 
     if (!user) {
@@ -90,13 +93,14 @@ export const logout = (req, res) => {
   res
     .status(200)
     .cookie("token", "", {
-      expires: new Date(Date.now() + 1 * 3600 * 1000), // Set cookie expiration to 1 hour from now
-      httpOnly: true, // Ensure cookies are only sent over HTTP(S), not accessible via JavaScript
+      expires: new Date(Date.now() + 1 * 3600 * 1000),
+      httpOnly: true,
       sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
       secure: process.env.NODE_ENV === "development" ? false : true,
     })
     .json({
       success: true,
-      user: req.user,
+      user: req.user, // Ensure req.user is set if needed
     });
 };
+
