@@ -18,8 +18,8 @@ const corsOptions = {
   credentials: true,
 };
 
-app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cors(corsOptions));
 
 const server = createServer(app);
 const io = new Server(server, {
