@@ -14,7 +14,7 @@ config({
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: `http://localhost:5173`,
+    origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   },
@@ -23,11 +23,18 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(
   cors({
-    origin: `http://localhost:5173`,
+    origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
 );
+
+// CORS middleware to handle preflight requests
+app.options('*', cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 
 io.on('connection', (socket) => {
   console.log('A user is connected');
