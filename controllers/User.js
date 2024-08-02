@@ -49,8 +49,8 @@ export const loginUser = async (req, res) => {
     });
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
-      sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+      secure: true,
+      sameSite: "none",
     });
     res.json({ message: `Login successful` });
   } catch (err) {
@@ -95,8 +95,8 @@ export const logout = (req, res) => {
     .cookie("token", "", {
       expires: new Date(Date.now() + 1 * 3600 * 1000),
       httpOnly: true,
-      sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
-      secure: process.env.NODE_ENV === "development" ? false : true,
+      sameSite: "none",
+      secure:  true,
     })
     .json({
       success: true,
