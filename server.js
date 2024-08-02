@@ -5,7 +5,7 @@ import cors from "cors";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import User from './model/user.js';
+import User from "./model/user.js";
 
 config({
   path: "./db/.env",
@@ -13,8 +13,8 @@ config({
 
 // CORS middleware configuration
 const corsOptions = {
-  origin: process.env.FRONTEND_URI || "*",
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: [process.env.FRONTEND_URI],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
 
@@ -26,33 +26,33 @@ const io = new Server(server, {
   cors: corsOptions,
 });
 
-io.on('connection', (socket) => {
-  console.log('A user is connected');
+io.on("connection", (socket) => {
+  console.log("A user is connected");
 
-  socket.on('updateStatus', async (userId, status) => {
+  socket.on("updateStatus", async (userId, status) => {
     try {
       await User.findByIdAndUpdate(userId, { status });
-      io.emit('statusUpdate', { userId, status }); // Emit as an object
+      io.emit("statusUpdate", { userId, status }); // Emit as an object
     } catch (err) {
       console.error(err);
     }
   });
 
-  socket.on('typing', (userId) => {
-    socket.broadcast.emit('typing', userId);
+  socket.on("typing", (userId) => {
+    socket.broadcast.emit("typing", userId);
   });
 
-  socket.on('stopTyping', (userId) => {
-    socket.broadcast.emit('stopTyping', userId); // Emit 'stopTyping' event
+  socket.on("stopTyping", (userId) => {
+    socket.broadcast.emit("stopTyping", userId); // Emit 'stopTyping' event
   });
 
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
     // Optionally update the user's status to 'offline'
   });
 
-  socket.on('sendMessage', (message) => {
-    io.emit('receiveMessage', message);
+  socket.on("sendMessage", (message) => {
+    io.emit("receiveMessage", message);
   });
 });
 

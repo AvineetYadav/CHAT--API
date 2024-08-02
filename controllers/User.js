@@ -47,10 +47,10 @@ export const loginUser = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.cookie('token', token, {
+    res.cookie(`token`, token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+      secure: process.env.NODE_ENV === "development" ? false : true,
     });
     res.json({ message: `Login successful` });
   } catch (err) {
@@ -95,12 +95,11 @@ export const logout = (req, res) => {
     .cookie("token", "", {
       expires: new Date(Date.now() + 1 * 3600 * 1000),
       httpOnly: true,
-      sameSite: "none",
-      secure:  true,
+      sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+      secure: process.env.NODE_ENV === "development" ? false : true,
     })
     .json({
       success: true,
       user: req.user, // Ensure req.user is set if needed
     });
 };
-
