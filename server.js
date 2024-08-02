@@ -11,30 +11,21 @@ config({
   path: "./db/.env",
 });
 
-const server = createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-  },
-});
-
-app.use(express.json());
-app.use(
-  cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-  })
-);
-
-// CORS middleware to handle preflight requests
-app.options('*', cors({
+// CORS middleware configuration
+const corsOptions = {
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions)); // Use CORS middleware with options
+app.options('*', cors(corsOptions)); // Handle preflight requests
+app.use(express.json());
+
+const server = createServer(app);
+const io = new Server(server, {
+  cors: corsOptions,
+});
 
 io.on('connection', (socket) => {
   console.log('A user is connected');
