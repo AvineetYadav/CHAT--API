@@ -14,7 +14,7 @@ config({
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [process.env.FRONTEND_URI],
+    origin: [process.env.FRONTEND_URI || `http://localhost:5173`],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   },
@@ -23,7 +23,7 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URI],
+    origin: [process.env.FRONTEND_URI || `http://localhost:5173`],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
