@@ -13,13 +13,12 @@ config({
 
 // CORS middleware configuration
 const corsOptions = {
-  origin: process.env.FRONTEND_URI,
+  origin: "*",
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
 
-app.use(cors(corsOptions)); // Use CORS middleware with options
-app.options('*', cors(corsOptions)); // Handle preflight requests
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const server = createServer(app);
