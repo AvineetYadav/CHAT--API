@@ -13,8 +13,8 @@ config({
 
 // CORS middleware configuration
 const corsOptions = {
-  origin: '*',
-  methods: ["GET", "POST"],
+  origin: 'http://localhost:5173', // Replace with your frontend's origin
+  methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ['Content-Type'],
   credentials: true,
 };
