@@ -13,7 +13,7 @@ config({
 
 // CORS middleware configuration
 const corsOptions = {
-  origin: ["*"],
+  origin: [process.env.FRONTEND_URL],
   methods: ["GET", "POST"],
   allowedHeaders: ['Content-Type'],
   credentials: true,
