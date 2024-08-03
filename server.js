@@ -1,6 +1,8 @@
 import { config } from "dotenv";
 import { connectDB } from "./db/database.js";
 import { app } from "./app.js";
+import cors from "cors";
+import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import User from "./model/user.js";
@@ -9,14 +11,19 @@ config({
   path: "./db/.env",
 });
 
+// CORS middleware configuration
+const corsOptions = {
+  origin: [process.env.FRONTEND_URL],
+  methods: ["GET", "POST"],
+  credentials: true,
+};
+
+app.use(express.json());
+app.use(cors(corsOptions));
+
 const server = createServer(app);
 const io = new Server(server, {
-  cors: {
-    origin: [process.env.FRONTEND_URL],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  },
+  cors: corsOptions,
 });
 
 io.on("connection", (socket) => {
