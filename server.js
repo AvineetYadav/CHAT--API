@@ -14,7 +14,8 @@ config({
 // CORS middleware configuration
 const corsOptions = {
   origin: [process.env.FRONTEND_URI],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST"],
+  allowedHeaders: ['Content-Type'],
   credentials: true,
 };
 
