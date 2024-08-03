@@ -11,19 +11,24 @@ config({
   path: "./db/.env",
 });
 
-// CORS middleware configuration
-const corsOptions = {
-  origin: [process.env.FRONTEND_URL],
-  methods: ["GET", "POST"],
-  credentials: true,
-};
-
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL], 
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 const server = createServer(app);
 const io = new Server(server, {
-  cors: corsOptions,
+  cors: {
+    origin: [process.env.FRONTEND_URL],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  },
 });
 
 io.on("connection", (socket) => {
