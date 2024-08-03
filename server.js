@@ -1,8 +1,6 @@
 import { config } from "dotenv";
 import { connectDB } from "./db/database.js";
 import { app } from "./app.js";
-import cors from "cors";
-import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import User from "./model/user.js";
@@ -10,16 +8,6 @@ import User from "./model/user.js";
 config({
   path: "./db/.env",
 });
-
-app.use(express.json());
-app.use(
-  cors({
-    origin: '*',
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
 
 const server = createServer(app);
 const io = new Server(server, {
