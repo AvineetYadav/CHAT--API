@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 export const app = express();
 dotenv.config();
 
-
 const corsOptions = {
   origin: [process.env.FRONTEND_URL],
   methods: ["GET", "POST"],
