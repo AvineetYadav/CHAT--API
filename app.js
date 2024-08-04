@@ -17,10 +17,11 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors(corsOptions));
+
 
 app.use(`/api/message`, messageRouter);
 app.use(`/api/users`, userRouter);
