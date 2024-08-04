@@ -3,16 +3,18 @@ import messageRouter from "./router/message.js";
 import userRouter from "./router/user.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import dotenv from "dotenv";
+import { config } from "dotenv";
 export const app = express();
-dotenv.config();
+config({
+  path: "./db/.env",
+});
 
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
-  optionsSuccessStatus: 204
+  optionsSuccessStatus: 204,
 };
 
 app.use(express.json());
