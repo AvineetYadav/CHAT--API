@@ -11,8 +11,8 @@ config({
 
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+ methods: "GET,HEAD,OPTIONS,POST,PUT",
+  allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization",
   credentials: true,
   optionsSuccessStatus: 204,
 };

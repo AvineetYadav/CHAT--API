@@ -20,6 +20,9 @@ const io = new Server(server, {
   },
 });
 
+console.log(process.env.FRONTEND_URL);
+
+
 io.on("connection", (socket) => {
   console.log("A user is connected");
 
