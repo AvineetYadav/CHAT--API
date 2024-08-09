@@ -59,34 +59,8 @@ export const loginUser = async (req, res) => {
 };
 
 export const getUserProfile = async (req, res) => {
-  try {
-    const { userId, username } = req.query;
-
-    if (!userId && !username) {
-      return res
-        .status(400)
-        .json({ message: `User Id or username is required` });
-    }
-
-    let user;
-    if (userId) {
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return res.status(400).json({ message: "Invalid User ID format" });
-      }
-      user = await User.findById(userId);
-    } else if (username) {
-      user = await User.findOne({ username });
-    }
-
-    if (!user) {
-      return res.status(404).json({ message: `User not found` });
-    }
-
-    const { password, ...userProfile } = user.toObject();
-    res.json(userProfile);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  const { username, email } = req.user;
+  res.json({ username, email });
 };
 
 export const logout = (req, res) => {
