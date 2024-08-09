@@ -1,7 +1,6 @@
 import User from "../model/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../model/user.js";
 
 export const registerUser = async (req, res) => {
   const { username, password, email } = req.body;
@@ -60,20 +59,33 @@ export const loginUser = async (req, res) => {
 };
 
 export const getUserProfile = async (req, res) => {
-  const token = req.cookie.token;
-
-  if (!token) return res.status(401).send(`Unauthorized`);
-
   try {
-    const decorded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decorded.userId).select(
-      "username email description"
-    );
+    const { userId, username } = req.query;
 
-    if (!user) return res.status(404).send("User not found");
-    res.json(user);
+    if (!userId && !username) {
+      return res
+        .status(400)
+        .json({ message: `User Id or username is required` });
+    }
+
+    let user;
+    if (userId) {
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid User ID format" });
+      }
+      user = await User.findById(userId);
+    } else if (username) {
+      user = await User.findOne({ username });
+    }
+
+    if (!user) {
+      return res.status(404).json({ message: `User not found` });
+    }
+
+    const { password, ...userProfile } = user.toObject();
+    res.json(userProfile);
   } catch (err) {
-    res.status(500).send("Server error");
+    res.status(500).json({ message: err.message });
   }
 };
 
