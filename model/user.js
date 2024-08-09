@@ -12,15 +12,20 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
+    lowercase: true,
   },
   password: {
     type: String,
     required: true,
   },
-  status:{
+  status: {
     type: String,
     enum: [`online`, `offline`],
-    default:`offline`,
+    default: `offline`,
+  },
+  description: {
+    type: String,
+    maxlength: 100,
   },
   createdAt: {
     type: Date,
